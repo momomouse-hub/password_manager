@@ -14,14 +14,16 @@ do
 	elif [ "$choice" = "Get Password" ]; then
 		read -p "サービス名を入力してください:" serching_service_name
 		if grep -q "^${serching_service_name}" passwords.txt; then
-			hits=$(grep "^${serching_service_name}" passwords.txt)
-			hit1=$(echo "$hits" | cut -d : -f 1)
-			hit2=$(echo "$hits" | cut -d : -f 2)
-			hit3=$(echo "$hits" | cut -d : -f 3)
-			echo "サービス名が見つかりました。"
-			echo "サービス名:$hit1"
-			echo "ユーザー名:$hit2"
-			echo "パスワード:$hit3"
+			for hit in $(grep "^${serching_service_name}" passwords.txt)
+			do
+				hit1=$(echo "$hit" | cut -d : -f 1)
+				hit2=$(echo "$hit" | cut -d : -f 2)
+				hit3=$(echo "$hit" | cut -d : -f 3)
+				echo "サービス名が見つかりました。"
+				echo "サービス名:$hit1"
+				echo "ユーザー名:$hit2"
+				echo "パスワード:$hit3"
+			done
 		else
 			echo "そのサービスは登録されていません。"
 		fi
