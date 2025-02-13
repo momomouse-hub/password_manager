@@ -9,12 +9,15 @@ do
 		read -p "サービス名を入力してください:" service_name
 		read -p "ユーザー名を入力してください:" user_name
 		read -p "パスワードを入力してください:" password
-		echo "$service_name:$user_name:$password" >> passwords.txt
+		gpg --decrypt passwords.txt.gpg > passwords.txt #復号化
+		echo "$service_name:$user_name:$password" >> passwords.txt #一時ファイル(passwords.txtに追記)
+		gpg --symmetric passwords.txt #暗号化
+		rm passwords.txt #一時ファイル削除
 		echo "パスワードの追加は成功しました。"
 	elif [ "$choice" = "Get Password" ]; then
-		read -p "サービス名を入力してください:" serching_service_name
-		if grep -q "^${serching_service_name}" passwords.txt; then
-			for hit in $(grep "^${serching_service_name}" passwords.txt)
+		read -p "サービス名を入力してください:" searching_service_name
+		if gpg --decrypt passwords.txt.gpg | grep -q "^${searching_service_name}:"; then #サービス名が部分一致でも反応するようになっていたので:追加 #復号データを標準出力へ
+			for hit in $(gpg --decrypt passwords.txt.gpg | grep "^${searching_service_name}") #復号データを標準出力へ
 			do
 				hit1=$(echo "$hit" | cut -d : -f 1)
 				hit2=$(echo "$hit" | cut -d : -f 2)
