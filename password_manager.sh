@@ -12,9 +12,9 @@ do
 		echo "$service_name:$user_name:$password" >> passwords.txt
 		echo "パスワードの追加は成功しました。"
 	elif [ "$choice" = "Get Password" ]; then
-		read -p "サービス名を入力してください:" serching_service_name
-		if grep -q "^${serching_service_name}" passwords.txt; then
-			for hit in $(grep "^${serching_service_name}" passwords.txt)
+		read -p "サービス名を入力してください:" searching_service_name
+		if grep -q "^${searching_service_name}" passwords.txt; then
+			for hit in $(grep "^${searching_service_name}" passwords.txt)
 			do
 				hit1=$(echo "$hit" | cut -d : -f 1)
 				hit2=$(echo "$hit" | cut -d : -f 2)
